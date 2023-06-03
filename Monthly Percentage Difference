@@ -1,0 +1,11 @@
+SELECT B.year_month,
+ROUND(((B.value-B.val)/cast(B.val as float))*100,2) revenue_diff_pct
+FROM (
+        SELECT A.created_at year_month,A.value,
+        lag(A.value,1) over( order by A.created_at) val
+        FROM (
+                SELECT substring(created_at,1,7) as created_at,SUM(value) AS value
+                FROM sf_transactions
+                GROUP BY substring(created_at,1,7)
+             ) A
+     ) B     
