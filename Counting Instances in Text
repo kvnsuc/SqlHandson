@@ -1,0 +1,11 @@
+  SELECT word,count(result) as nentry FROM (
+  SELECT 'bull' as word,TRIM(splt.VALUE) AS RESULT 
+  FROM google_file_store
+  CROSS APPLY STRING_SPLIT(google_file_store.contents,' ') splt
+  ) A WHERE A.RESULT='BULL' GROUP BY A.WORD
+  UNION
+  SELECT word,count(result) as nentry FROM (
+  SELECT 'bear' as word,TRIM(splt.VALUE) AS RESULT 
+  FROM google_file_store
+  CROSS APPLY STRING_SPLIT(google_file_store.contents,' ') splt
+  ) A WHERE A.RESULT='bear' GROUP BY A.WORD
